@@ -47,16 +47,19 @@ class Login(View):
             return redirect('/login?message=用户名密码错误')
 
 
-overall_message = ""
+# overall_message = ""
 class Index(View):
     def get(self, request):
         if request.user.is_authenticated:
-            global overall_message
+            # global overall_message
             message = request.GET.get('message', '')
+            msg = ""
+            msg2 = ""
             if len(message) > 0:
                 answer = get_answer(message)
-                overall_message += "User: " + message + '\n' + 'Chatbox: ' + answer + '\n'
-            return render(request, 'index.html',  {'message':overall_message})
+                msg = "User: " + message + '\n' + 'Chatbox: ' + answer + '\n'
+                msg2 = answer.strip()
+            return render(request, 'index.html',  {'message':msg, 'message2': msg2})
         else:
             return render(request, 'login.html')
 

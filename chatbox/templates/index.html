@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -10,15 +11,22 @@
         </style>
     </head>        
     <body>
-        <div>ChatGPT China</div>
+        <div> 输入您的问题:</div>
         <div>
             <form action="{% url 'index' %}" method="POST">
                 {% csrf_token %}
-                <textarea cols="100" rows="10", name="message"></textarea>
-                <input type="submit" value="提交">
+                <textarea cols="64" rows="10", name="message"></textarea>
+                <div><input type="submit" value="提交"></div>
             </form>
         </div>
-        <textarea cols="100" rows="10", class="info", readonly="readonly">{{ message }}</textarea>
+        <textarea cols="64" rows="10", class="info", readonly="readonly">{{ message }}</textarea>
         <div><a href="{% url 'logout' %}">退出登录</a></div>
+
+        <script src="{% static 'speaker.js' %}"></script>
+        <script>
+            var recv = "{{message2}}"
+            var speaker = new Speaker({ text: recv });
+            speaker.start();
+        </script>
     </body>
 </html>
