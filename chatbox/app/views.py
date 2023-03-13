@@ -3,6 +3,7 @@ from django.views.generic import View
 from django.contrib.auth.models import User
 from django.contrib.auth import login, logout, authenticate
 
+from .wrapopenai import get_answer
 # Create your views here.
 
 class Register(View):
@@ -46,15 +47,22 @@ class Login(View):
             return redirect('/login?message=用户名密码错误')
 
 
+overall_message = ""
 class Index(View):
     def get(self, request):
         if request.user.is_authenticated:
-            return render(request, 'index.html')
+            global overall_message
+            message = request.GET.get('message', '')
+            if len(message) > 0:
+                answer = get_answer(message)
+                overall_message += "User: " + message + '\n' + 'Chatbox: ' + answer + '\n'
+            return render(request, 'index.html',  {'message':overall_message})
         else:
             return render(request, 'login.html')
 
     def post(self, request):
-        pass 
+        message = request.POST.get('message', '')
+        return redirect('/index?message=' + str(message))
 
 
 class Logout(View):
