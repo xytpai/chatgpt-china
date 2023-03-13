@@ -2,11 +2,23 @@
 <html lang="en">
     <head>
         <meta charset="UTF-8">
-        <title>网站首页</title>
-    </head>
+        <title>ChatGPT China</title>
+        <style>
+        .info {
+            background-color: rgb(203, 197, 197);
+        }
+        </style>
+    </head>        
     <body>
-        登录成功，已进入首页
-        <br>
-        <a href="{% url 'logout' %}">退出登录</a>
+        <div>ChatGPT China</div>
+        <div>
+            <form action="{% url 'index' %}" method="POST">
+                {% csrf_token %}
+                <textarea cols="100" rows="10", name="message"></textarea>
+                <input type="submit" value="提交">
+            </form>
+        </div>
+        <textarea cols="100" rows="10", class="info", readonly="readonly">{{ message }}</textarea>
+        <div><a href="{% url 'logout' %}">退出登录</a></div>
     </body>
 </html>
